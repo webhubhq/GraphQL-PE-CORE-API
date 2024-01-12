@@ -1,0 +1,22 @@
+{
+  "name": "graphql-pe-core-api",
+  "version": "1.0.0",
+  "description": "Programming engine for Core API built off of an Apollo GraphQL server",
+  "main": "index.js",
+  "scripts": {
+    "compile": "tsc",
+    "start": "npm run compile && node --es-module-specifier-resolution=node ./dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@apollo/server": "^4.10.0",
+    "graphql": "^16.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3"
+  }
+}
