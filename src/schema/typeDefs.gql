@@ -1,0 +1,638 @@
+    # /
+    """
+    Main entry point to make any type of query or mutation of your api and its resources
+    """
+    type Query {
+        api: [APIRequest],
+    }
+
+    # /api
+    """
+    A request to your resources / services (GraphQL Scripts, AWS, MongoDB, NextJs, Ledger)
+    """
+    type APIRequest {
+        """
+        Make a request to GraphQL Scripts Endpoint
+        """
+        graphql: GraphQLScriptRequest
+        """
+        Query and mutate AWS resources and services
+        """
+        aws: AWSRequest
+        """
+        Connect, query, and mutate a MongoDB instance
+        """
+        mongodb: MongoDBRequest
+        """
+        Initialize and manage a front-end NextJs application
+        """
+        nextjs: NextJsRequest
+        """
+        View evirnomnents, secrets, events, and architecture related to your api 
+        """
+        ledger: LedgerRequest
+    }
+
+
+    # /api/graphql
+
+    type GraphQLScriptRequest {
+        create(name: String!): CreateGraphQLScriptRequest
+        delete(nameID: String!): DeleteGraphQLScriptRequest
+        execute(nameID: String!): ExecuteGraphQLScriptRequest
+    }
+
+        # /api/graphqlscripts/create/{name}
+        type CreateGraphQLScriptRequest {
+            name: String
+            nameID: String!
+        }
+
+        # /api/graphqlscripts/delete/{nameID}
+        type DeleteGraphQLScriptRequest {
+            name: String
+            nameID: String
+
+            ### more
+        }
+
+        # /api/graphqlscripts/execute/{nameID}
+        type ExecuteGraphQLScriptRequest {
+            name: String
+            nameID: String
+
+            ### more
+        }
+
+ 
+
+    # /api/aws
+
+    type AWSRequest {
+        create: AWSCreateResource
+        delete: AWSDeleteResource
+        apigateway(nameID: String!): AWSApiGatewayResourceManager
+        websocket(nameID: String!): AWSWebsocketResourceManager
+    }
+
+        # /api/aws/create
+        type AWSCreateResource {
+            apigateway(name: String!): AWSCreateApiGateway
+            websocket(name: String!): AWSCreateWebsocket
+        }
+
+            # /api/aws/create/apigateway/{name}
+            type AWSCreateApiGateway {
+                name: String
+                nameID: String!
+            }
+
+            # /api/aws/create/websocket/{name}
+            type AWSCreateWebsocket {
+                name: String
+                nameID: String!
+            }
+
+        # /api/aws/delete
+        type AWSDeleteResource {
+            apigateway(nameID: String!): AWSDeleteApiGateway
+            websocket(nameID: String!): AWSDeleteWebsocket
+        }
+
+            # /api/aws/delete/apigateway/{name}
+            type AWSDeleteApiGateway {
+                name: String
+                nameID: String!
+
+                ### more
+            }
+
+            # /api/aws/delete/websocket/{name}
+            type AWSDeleteWebsocket {
+                name: String
+                nameID: String!
+
+                ### more
+            }
+
+    
+        # /api/aws/apigateway
+        type AWSApiGatewayResourceManager {
+            create: AWSCreateApiGatewayResource
+            delete: AWSDeleteApiGatewayResource
+            dynamodb(nameID: String!): AWSDynamoDBResourceManager
+            s3(nameID: String!): AWSS3ResourceManager
+            lambda(nameID: String!): AWSLambdaResourceManager
+        }
+
+            # /api/aws/apigateway/{nameID}/create
+            type AWSCreateApiGatewayResource {
+                dynamodb(name: String): AWSCreateDynamoDB
+                s3(name: String): AWSCreateS3
+                lambda(name: String): AWSCreateLambda
+            }
+
+                # /api/aws/apigateway/{nameID}/create/dynamodb/{name}
+                type AWSCreateDynamoDB {
+                    name: String
+                    nameID: String!
+                }
+
+                # /api/aws/apigateway/{nameID}/create/s3/{name}
+                type AWSCreateS3 {
+                    name: String
+                    nameID: String!
+                }
+
+                # /api/aws/apigateway/{nameID}/create/lambda/{name}
+                type AWSCreateLambda {
+                    name: String
+                    nameID: String!
+                }
+
+            # /api/aws/apigateway/{nameID}/delete
+            type AWSDeleteApiGatewayResource {
+                dynamodb(nameID: String!): AWSDeleteDynamoDB
+                s3(nameID: String!): AWSDeleteS3
+                lambda(nameID: String!): AWSDeleteLambda
+            }
+
+                # /api/aws/apigateway/{nameID}/delete/dynamodb/{nameID}
+                type AWSDeleteDynamoDB {
+                    name: String
+                    nameID: String!
+
+                    ### more
+                }
+
+                # /api/aws/apigateway/{nameID}/delete/s3/{nameID}
+                type AWSDeleteS3 {
+                    name: String
+                    nameID: String!
+
+                    ### more
+                }
+
+                # /api/aws/apigateway/{nameID}/delete/lambda/{nameID}
+                type AWSDeleteLambda {
+                    name: String
+                    nameID: String!
+
+                    ### more
+                }
+
+            # /api/aws/apigateway/{nameID}/dynamodb/{nameID}
+            type AWSDynamoDBResourceManager {
+                name: String
+                nameID: String
+
+                ### more
+            }
+
+            # /api/aws/apigateway/{nameID}/s3/{nameID}
+            type AWSS3ResourceManager {
+                name: String
+                nameID: String
+
+                ### more
+            }
+
+            # /api/aws/apigateway/{nameID}/lambda/{nameID}
+            type AWSLambdaResourceManager {
+                read: AWSLambdaResourceRead
+                update: AWSLambdaResourceUpdate
+                execute: AWSLambdaResourceExecute
+            }
+
+                # /api/aws/apigateway/{nameID}/lambda/{nameID}/read
+                type AWSLambdaResourceRead {
+                    name: String
+                    nameID: String
+
+                    ### more
+                }
+
+                # /api/aws/apigateway/{nameID}/lambda/{nameID}/update
+                type AWSLambdaResourceUpdate {
+                    name: String
+                    nameID: String
+
+                    ### more
+                }
+
+                # /api/aws/apigateway/{nameID}/lambda/{nameID}/execute
+                type AWSLambdaResourceExecute {
+                    name: String
+                    nameID: String
+
+                    ### more
+                }
+
+
+        # /api/aws/websocket
+        type AWSWebsocketResourceManager {
+            name: String
+            nameID: String
+
+            ### more
+        }
+
+    # /api/mongodb
+
+    type MongoDBRequest {
+        create(name: String!): CreateMongoDB
+        delete(nameID: String!): DeleteMongoDB
+        db(nameID: String!): MongoDBResourceManager
+    }
+
+        # /api/mongodb/create/{name}
+        type CreateMongoDB {
+            name: String
+            nameID: String!
+        }
+
+        # /api/mongodb/delete/{nameID}
+        type DeleteMongoDB {
+            name: String
+            nameID: String!
+
+            ### more
+        }
+
+        # /api/mongodb/{nameID}
+        type MongoDBResourceManager {
+            name: String
+            nameID: String
+
+            ### more
+            # script: [MongoDBResourceScript]
+        }
+
+            # /api/mongodb/{nameID}/script
+            # type MongoDBResourceScript {
+
+            # }
+
+    # /api/nextjs
+
+    type NextJsRequest {
+        create(name: String!): CreateNextJsResource
+        delete(nameID: String!): DeleteNextJsResource
+        resource(nameID: String!): NextJsResourceManager
+    }
+
+        # /api/nextjs/create/{name}
+        type CreateNextJsResource {
+            name: String
+            nameID: String!
+        }
+
+        # /api/nextjs/delete/{nameID}
+        type DeleteNextJsResource {
+            name: String
+            nameID: String!
+        }
+
+        # /api/nextjs/{nameID}
+        type NextJsResourceManager {
+            name: String
+            nameID: String!
+
+            ### more
+        }
+
+
+    # /api/ledger
+
+    type LedgerRequest {
+        environmentVariables: AppEnvironmentVariablesLedger
+        secrets(secretApiKey: String!): AppSecretsLedger
+        events: AppEventsLedger
+        architecture: AppArchitectureLedger
+    }
+
+        # /api/ledger/environmentvariables
+        type AppEnvironmentVariablesLedger {
+            api: APIEnvironmenVariablesLedger
+            ec2(nameID: String): [EC2EnvironmentVariablesLedger]
+            apigateway(nameID: String): [ApiGatewayEnvironmentVariablesLedger]
+            websocket(nameID: String): [WebsocketEnvironmentVariablesLedger]
+            mongodb(nameID: String): [MongoDBEnvironmentVariablesLedger]
+            nextjs(nameID: String): [NextJsEnvironmentVariablesLedger]
+        }
+
+            # /api/ledger/environmentvariables/api
+            type APIEnvironmenVariablesLedger {
+                rid: String
+
+                ### more
+            }
+
+            # /api/ledger/environmentvariables/ec2
+            # /api/ledger/environmentvariables/ec2/{nameID}
+            type EC2EnvironmentVariablesLedger {
+                name: String
+                nameID: String
+                id: String
+
+                ### more
+            }
+
+            # /api/ledger/environmentvariables/apigateway
+            # /api/ledger/environmentvariables/apigateway/{nameID}
+            type ApiGatewayEnvironmentVariablesLedger {
+                name: String
+                nameID: String
+                dynamodb(nameID: String): [DynamoEnvironmentVariablesLedger]
+                s3(nameID: String): [S3SEnvironmentVariablesLedger]
+                lambda(nameID: String): [LambdaEnvironmentVariablesLedger]
+
+                ### more
+            }
+
+                # /api/ledger/secrets/environmentvariables/{nameID}/dynamodb
+                # /api/ledger/secrets/environmentvariables/{nameID}/dynamodb/{nameID}
+                type DynamoEnvironmentVariablesLedger {
+                    name: String
+                    nameID: String
+
+                    ### more
+                }
+
+                # /api/ledger/secrets/environmentvariables/{nameID}/s3
+                # /api/ledger/secrets/environmentvariables/{nameID}/s3/{nameID}
+                type S3SEnvironmentVariablesLedger {
+                    name: String
+                    nameID: String
+
+                    ### more
+                }
+
+                # /api/ledger/secrets/environmentvariables/{nameID}/lambda
+                # /api/ledger/secrets/environmentvariables/{nameID}/lambda/{nameID}
+                type LambdaEnvironmentVariablesLedger {
+                    name: String
+                    nameID: String
+
+                    ### more
+                }
+
+            # /api/ledger/environmentvariables/websocket
+            # /api/ledger/environmentvariables/websocket/{nameID}
+            type WebsocketEnvironmentVariablesLedger {
+                name: String
+                nameID: String
+
+                ### more
+            }
+
+            # /api/ledger/environmentvariables/mongodb
+            # /api/ledger/environmentvariables/mongodb/{nameID}
+            type MongoDBEnvironmentVariablesLedger {
+                name: String
+                nameID: String
+
+                ### more
+            }
+
+            # /api/ledger/environmentvariables/nextjs
+            # /api/ledger/environmentvariables/nextjs/{nameID}
+            type NextJsEnvironmentVariablesLedger {
+                name: String
+                nameID: String
+
+                ### more
+            }
+
+        # /api/ledger/secrets
+        type AppSecretsLedger {
+            api: APISecretsLedger
+            ec2(nameID: String): [EC2SecretsLedger]
+            apigateway(nameID: String): [ApiGatewaySecretsLedger]
+            websocket(nameID: String): [WebsocketSecretsLedger]
+            mongodb(nameID: String): [MongoDBSecretsLedger]
+            nextjs(nameID: String): [NextJsSecretsLedger]
+        }
+
+            # /api/ledger/secrets/api
+            type APISecretsLedger {
+                apiKey: String
+
+                ### more
+            }
+
+            # /api/ledger/secrets/ec2
+            # /api/ledger/secrets/ec2/{nameID}
+            type EC2SecretsLedger {
+                name: String
+                nameID: String
+
+                ### more
+            }
+
+            # /api/ledger/secrets/apigateway
+            # /api/ledger/secrets/apigateway/{nameID}
+            type ApiGatewaySecretsLedger {
+                name: String
+                nameID: String
+                dynamodb(nameID: String): [DynamoDBSecretsLedger]
+                s3(nameID: String): [S3SecretsLedger]
+                lambda(nameID: String): [LambdaSecretsLedger]
+
+                ### more
+            }
+
+                # /api/ledger/secrets/apigateway/{nameID}/dynamodb
+                # /api/ledger/secrets/apigateway/{nameID}/dynamodb/{nameID}
+                type DynamoDBSecretsLedger {
+                    name: String
+                    nameID: String
+
+                    ### more
+                }
+
+                # /api/ledger/secrets/apigateway/{nameID}/s3
+                # /api/ledger/secrets/apigateway/{nameID}/s3/{nameID}
+                type S3SecretsLedger {
+                    name: String
+                    nameID: String
+
+                    ### more
+                }
+
+                # /api/ledger/secrets/apigateway/{nameID}/lambda
+                # /api/ledger/secrets/apigateway/{nameID}/lambda/{nameID}
+                type LambdaSecretsLedger {
+                    name: String
+                    nameID: String
+
+                    ### more
+                }
+
+            # /api/ledger/secrets/websocket
+            # /api/ledger/secrets/websocket/{nameID}
+            type WebsocketSecretsLedger {
+                name: String
+                nameID: String
+
+                ### more
+            }
+
+            # /api/ledger/secrets/mongodb
+            # /api/ledger/secrets/mongodb/{nameID}
+            type MongoDBSecretsLedger {
+                name: String
+                nameID: String
+
+                ### more
+            }
+
+            # /api/ledger/secrets/nextjs
+            # /api/ledger/secrets/nextjs/{nameID}
+            type NextJsSecretsLedger {
+                name: String
+                nameID: String
+
+                ### more
+            }
+
+        # /api/ledger/events
+        type AppEventsLedger {
+            api: APIEventsLedger
+            graphqlscripts(nameID: String): [GraphQLScriptsEventsLedger] 
+            ec2(nameID: String): [EC2EventsLedger]
+            apigateway(nameID: String): [ApiGatewayEventsLedger]
+            websocket(nameID: String): [WebsocketEventsLedger]
+            mongodb(nameID: String): [MongoDBEventsLedger]
+            nextjs(nameID: String): [NextJsEventsLedger]
+        }
+
+            # /api/ledger/events/api
+            type APIEventsLedger {
+                createdAt: String
+
+                ### more
+            }
+
+            # /api/ledger/events/graphql/scripts
+            # /api/ledger/events/graphql/scripts/{nameID}
+            type GraphQLScriptsEventsLedger {
+                name: String
+                nameID: String
+
+                ### more
+            }
+
+            # /api/ledger/events/ec2
+            # /api/ledger/events/ec2/{nameID}
+            type EC2EventsLedger {
+                name: String
+                nameID: String
+
+                ### more
+            }
+
+            # /api/ledger/events/apigateway
+            # /api/ledger/events/apigateway/{nameID}
+            type ApiGatewayEventsLedger {
+                name: String
+                nameID: String
+                dynamodb(nameID: String): [DynamoDBEventsLedger]
+                s3(nameID: String): [S3EventsLedger]
+                lambda(nameID: String): [LambdaEventsLedger]
+            }
+
+                # /api/ledger/events/apigateway/{nameID}/dynamodb
+                # /api/ledger/events/apigateway/{nameID}/dynamodb/{nameID}
+                type DynamoDBEventsLedger {
+                    name: String
+                }
+
+                # /api/ledger/events/apigateway/{nameID}/s3
+                # /api/ledger/events/apigateway/{nameID}/s3/{nameID}
+                type S3EventsLedger {
+                    name: String
+                }
+
+                # /api/ledger/events/apigateway/{nameID}/lambda
+                # /api/ledger/events/apigateway/{nameID}/lambda/{nameID}
+                type LambdaEventsLedger {
+                    name: String
+                }
+
+            # /api/ledger/events/websocket
+            # /api/ledger/events/websocket/{nameID}
+            type WebsocketEventsLedger {
+                name: String
+                nameID: String
+            }
+
+            # /api/ledger/events/mongodb
+            # /api/ledger/events/mongodb/{nameID}
+            type MongoDBEventsLedger {
+                name: String
+                nameID: String
+            }
+
+            # /api/ledger/events/nextjs
+            # /api/ledger/events/nextjs/{nameID}
+            type NextJsEventsLedger {
+                name: String
+                nameID: String
+            }
+
+        # /api/ledger/architecture
+        type AppArchitectureLedger {
+            api: APIArchitectureLedger
+            ec2: [EC2ArchitectureLedger]
+            apigateway: [ApiGatewayArchitectureLedger]
+            websocket: [WebsocketArchitectureLedger]
+            mongodb: [MongoDBArchitectureLedger]
+            nextjs: [NextJsArchitectureLedger]
+        }
+
+            # /api/ledger/architecture/api
+            type APIArchitectureLedger {
+                createdAt: String
+            }
+
+            # /api/ledger/architecture/ec2
+            # /api/ledger/architecture/ec2/{nameID}
+            type EC2ArchitectureLedger {
+                name: String
+                nameID: String
+            }
+
+            # /api/ledger/architecture/apigateway
+            # /api/ledger/architecture/apigateway/{nameID}
+            type ApiGatewayArchitectureLedger {
+                name: String
+                nameID: String
+            }
+
+            # /api/ledger/architecture/websocket
+            # /api/ledger/architecture/websocket/{nameID}
+            type WebsocketArchitectureLedger {
+                name: String
+                nameID: String
+            }
+
+            # /api/ledger/architecture/mongodb
+            # /api/ledger/architecture/mongodb/{nameID}
+            type MongoDBArchitectureLedger {
+                name: String
+                nameID: String
+            }
+
+            # /api/ledger/architecture/nextjs
+            # /api/ledger/architecture/nextjs/{nameID}
+            type NextJsArchitectureLedger {
+                name: String
+                nameID: String
+            }
+
+
+
+                
+
+

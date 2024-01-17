@@ -1,12 +1,21 @@
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 
-import { typeDefs, resolvers } from './schema';
+import resolvers from "./schema/resolvers"
+
+import { readFileSync } from 'fs';
+import path from 'path';
+import { makeExecutableSchema } from 'graphql-tools';
+import gql from 'graphql-tag';
+
+const __dirname = path.resolve(path.dirname(''));
+
+const typeDefs = gql(readFileSync(path.resolve(__dirname, "dist/schema/typeDefs.gql").toString(), 'utf8'));
+const schema = makeExecutableSchema({ typeDefs, resolvers });
 
 // server setup
 const server = new ApolloServer({
-    typeDefs,
-    resolvers,
+    schema
 });
 
 const { url } = await startStandaloneServer(server, {
