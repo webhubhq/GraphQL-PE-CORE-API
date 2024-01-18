@@ -1,7 +1,7 @@
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 
-import resolvers from "./schema/resolvers"
+import resolvers from "./schema/resolvers.js"
 
 import { readFileSync } from 'fs';
 import path from 'path';

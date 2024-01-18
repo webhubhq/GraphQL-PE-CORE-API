@@ -1,4 +1,13 @@
+import axios from 'axios';
+
 const resolvers = {
+
+    ApiEndpoint: {
+        method: (_) => _.method,
+        path: (_) => _.path,
+        url: (_) => _.url
+    },
+
     Query: {
 
         // [APIRequest]
@@ -14,24 +23,46 @@ const resolvers = {
     },
 
     GraphQLScriptRequest: {
+
+        // CreateGraphQLScriptRequest
         create: (_, { name }, ctx) => {
+            const apiendpoint = {
+                method: 'POST',
+                path: '/v1/api/graphqlscripts/create/:graphqlscriptsname',
+                url: `/v1/api/graphqlscripts/create/${name}`
+            };
             return {
                 name,
-                nameID: `${name}-id`
+                nameID: `${name}-id`,
+                apiendpoint
             };  
         },
         
+        // DeleteGraphQLScriptRequest
         delete: (_, { nameID }, ctx) => {
+            const apiendpoint = {
+                method: 'POST',
+                path: '/v1/api/graphqlscripts/delete/:graphqlscriptsname',
+                url: `/v1/api/graphqlscripts/delete/${nameID}`
+            };
             return {
                 name: 'name',
                 nameID,
+                apiendpoint,
             }
         },
         
+        // ExecuteGraphQLScriptRequest
         execute: (_, { nameID }, ctx) => {
+            const apiendpoint = {
+                method: 'POST',
+                path: '/v1/api/graphqlscripts/execute/:graphqlscriptsname',
+                url: `/v1/api/graphqlscripts/execute/${nameID}`
+            };
             return {
                 name: 'name',
                 nameID,
+                apiendpoint
             }
         },
     },
@@ -52,11 +83,11 @@ const resolvers = {
 
         // AWSApiGatewayResourceManager
         apigateway: (_, { nameID }, ctx) => ({
-            create: { nameID },
-            delete: { nameID },
-            dynamodb: { nameID },
-            s3: { nameID },
-            lambda: { nameID },
+            create: { _apigatewaynameID: nameID },
+            delete: { _apigatewaynameID: nameID },
+            dynamodb: { _apigatewaynameID: nameID },
+            s3: { _apigatewaynameID: nameID },
+            lambda: { _apigatewaynameID: nameID },
         }),
 
         // AWSWebsocketResourceManager
@@ -124,9 +155,16 @@ const resolvers = {
 
             // AWSDynamoDBResourceManager
             dynamodb: (_, { nameID }, ctx) => {
+                console.log('_: ', _)
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/aws/apigateway/:apigatewaynameID/dynamodb/:dynamodbnameID',
+                    url: `/v1/api/aws/apigateway/${_?.dynamodb?._apigatewaynameID}/dynamodb/${nameID}`
+                };
                 return {
                     name: 'name',
                     nameID,
+                    apiendpoint,
                 };
             },
 
@@ -227,7 +265,102 @@ const resolvers = {
                 nameID,
             }
         },
+
+        // MongoDBResourceScript
+        script: () => ({
+            execute: {},
+        })
     },
+
+        MongoDBResourceScript: {
+            // String
+            execute: async (_, { mongodbscript }, ctx) => {
+
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/mongodb/script',
+                    url: '/v1/api/mongodb/script',
+                }
+
+                const options = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'api-key': '75pQZG2c9zFlpG0g6XCrQCT2BH7fvv1KDYpDJAPUQysxI4Etjrpqvff9n7thEsXP',
+                        'Accept': '*/*'
+                    },
+                    url: 'https://us-east-1.aws.data.mongodb-api.com/app/data-bhaqy/endpoint/custom/webhub/api/dev',
+                    method: 'POST',
+                    data: mongodbscript,
+                };
+                
+                const res = await axios(options)
+                    .then(response => {
+                        // Handle successful response
+                        const { data } = response;
+                        // console.log('Response:', Object.keys(data.response));
+                        console.log('JSON.stringify(data.status): ', JSON.stringify(data.response.status))
+                        console.log('JSON.stringify(data.variables): ', JSON.stringify(data.response.variables))
+                        return {
+                            status: JSON.stringify(data.response.status),
+                            variables: JSON.stringify(data.response.variables),
+                            apiendpoint,
+                        };
+                    })
+                    .catch(error => {
+                        // Handle error
+                        console.error('Error:', error);
+                        return { status: `failed: ${error}`, variables: '{}', apiendpoint };
+                    });
+
+                return { ...res };
+            },
+
+            executegraphql: async (_, { mongodbscriptbuild }, ctx) => {
+
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/mongodb/script',
+                    url: '/v1/api/mongodb/script',
+                }
+
+                console.log('mongodbscriptbuild: ', mongodbscriptbuild)
+                console.log('mongodbscriptbuild: ', JSON.stringify(mongodbscriptbuild))
+
+                const options = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'api-key': '75pQZG2c9zFlpG0g6XCrQCT2BH7fvv1KDYpDJAPUQysxI4Etjrpqvff9n7thEsXP',
+                        'Accept': '*/*'
+                    },
+                    url: 'https://us-east-1.aws.data.mongodb-api.com/app/data-bhaqy/endpoint/custom/webhub/api/dev',
+                    method: 'POST',
+                    data: JSON.stringify(mongodbscriptbuild),
+                };
+                
+                const res = await axios(options)
+                    .then(response => {
+                        // Handle successful response
+                        const { data } = response;
+                        // console.log('Response:', Object.keys(data.response));
+                        // console.log('JSON.stringify(data.status): ', JSON.stringify(data.response.status))
+                        // console.log('JSON.stringify(data.variables): ', JSON.stringify(data.response.variables))
+                        return {
+                            status: JSON.stringify(data.response.status),
+                            variables: JSON.stringify(data.response.variables),
+                            apiendpoint,
+                        };
+                    })
+                    .catch(error => {
+                        // Handle error
+                        console.error('Error:', error);
+                        return { status: `failed: ${error}`, variables: '{}', apiendpoint };
+                    });
+
+                return { ...res };
+            },
+
+        },
+        
 
     NextJsRequest: {
 
