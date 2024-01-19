@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+const baseUrl = 'http://localhost:5000';
+
 const resolvers = {
 
     ApiEndpoint: {
@@ -91,10 +93,43 @@ const resolvers = {
         }),
 
         // AWSWebsocketResourceManager
-        websocket: (_, { nameID }, ctx) => {
+        websocket: async (_, { nameID }, ctx) => {
+            const apiendpoint = {
+                method: 'POST',
+                path: '/v1/api/aws/websocket/:websocketnameID',
+                url: `/v1/api/aws/websocket/${nameID}`
+            };
+
+            const options = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    // 'api-key': '75pQZG2c9zFlpG0g6XCrQCT2BH7fvv1KDYpDJAPUQysxI4Etjrpqvff9n7thEsXP',
+                    'Accept': '*/*'
+                },
+                url: baseUrl + apiendpoint.url,
+                method: apiendpoint.method,
+            };
+            
+            const res = await axios(options)
+                .then(response => {
+                    // Handle successful response
+                    // const { data } = response;
+                    console.log('Response:', JSON.stringify(response.data));
+                    
+                    return {
+                        
+                    };
+                })
+                .catch(error => {
+                    // Handle error
+                    console.error('Error:', error);
+                    return { error };
+                });
+
             return {
                 name: 'name',
                 nameID,
+                apiendpoint,
             };
         },
     },
@@ -103,17 +138,29 @@ const resolvers = {
 
             // AWSCreateApiGateway
             apigateway: (_, { name }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/aws/create/apigateway/:apigatewayname',
+                    url: `/v1/api/aws/create/apigateway/${name}`
+                };
                 return {
                     name,
                     nameID: `${name}-id`,
+                    apiendpoint,
                 };
             },
 
             // AWSCreateWebsocket
             websocket: (_, { name }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/aws/create/websocket/:websocketname',
+                    url: `/v1/api/aws/create/websocket/${name}`
+                };
                 return {
                     name,
                     nameID: `${name}-id`,
+                    apiendpoint,
                 };
             },
         },
@@ -122,17 +169,29 @@ const resolvers = {
 
             // AWSDeleteApiGateway
             apigateway: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/aws/delete/apigateway/:apigatewaynameID',
+                    url: `/v1/api/aws/delete/apigateway/${nameID}`
+                };
                 return {
                     name: 'name',
                     nameID,
+                    apiendpoint,
                 };
             },
 
             // AWSDeleteWebsocket
             websocket: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/aws/delete/websocket/:websocketnameID',
+                    url: `/v1/api/aws/delete/websocket/${nameID}`
+                };
                 return {
                     name: 'name',
                     nameID,
+                    apiendpoint,
                 };
             },
         },
@@ -170,6 +229,11 @@ const resolvers = {
 
             // AWSS3ResourceManager
             s3: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/aws/apigateway/:apigatewaynameID/s3/:s3nameID',
+                    url: `/v1/api/aws/apigateway/${_?.s3?._apigatewaynameID}/s3/${nameID}`
+                };
                 return {
                     name: 'name',
                     nameID,
@@ -178,9 +242,15 @@ const resolvers = {
 
             // AWSLambdaResourceManager
             lambda: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/aws/apigateway/:apigatewaynameID/lambda/:s3nameID',
+                    url: `/v1/api/aws/apigateway/${_?.lambda?._apigatewaynameID}/lambda/${nameID}`
+                };
                 return {
                     name: 'name',
                     nameID,
+                    apiendpoint,
                 };
             },
 
@@ -190,14 +260,25 @@ const resolvers = {
 
                 // AWSCreateDynamoDB
                 dynamodb: (_, { name }, ctx) => {
+                    const apiendpoint = {
+                        method: 'POST',
+                        path: '/v1/api/aws/apigateway/:apigatewaynameID/create/dynamodb/:dynamodbname',
+                        url: `/v1/api/aws/apigateway/${_?.lambda?._apigatewaynameID}/create/dynamodb/${name}`
+                    };
                     return {
                         name,
                         nameID: `${name}-id`,
+                        apiendpoint,
                     };
                 },
 
                 // AWSCreateS3
                 s3: (_, { name }, ctx) => {
+                    const apiendpoint = {
+                        method: 'POST',
+                        path: '/v1/api/aws/apigateway/:apigatewaynameID/create/s3/:s3name',
+                        url: `/v1/api/aws/apigateway/${_?.s3?._apigatewaynameID}/create/s3/${name}`
+                    };
                     return {
                         name,
                         nameID: `${name}-id`,
@@ -206,9 +287,15 @@ const resolvers = {
 
                 // AWSCreateLambda
                 lambda: (_, { name }, ctx) => {
+                    const apiendpoint = {
+                        method: 'POST',
+                        path: '/v1/api/aws/apigateway/:apigatewaynameID/create/lambda/:lambdaname',
+                        url: `/v1/api/aws/apigateway/${_?.lambda?._apigatewaynameID}/create/lambda/${name}`
+                    };
                     return {
                         name,
                         nameID: `${name}-id`,
+                        apiendpoint,
                     };
                 },
             },
@@ -217,25 +304,43 @@ const resolvers = {
 
                 // AWSDeleteDynamoDB
                 dynamodb: (_, { nameID }, ctx) => {
+                    const apiendpoint = {
+                        method: 'POST',
+                        path: '/v1/api/aws/apigateway/:apigatewaynameID/delete/dynamodb/:dynamodbnameID',
+                        url: `/v1/api/aws/apigateway/${_?.dynamodb?._apigatewaynameID}/delete/dynamodb/${nameID}`
+                    };
                     return {
                         name: 'name',
                         nameID,
+                        apiendpoint,
                     };
                 },
 
                 // AWSDeleteS3
                 s3: (_, { nameID }, ctx) => {
+                    const apiendpoint = {
+                        method: 'POST',
+                        path: '/v1/api/aws/apigateway/:apigatewaynameID/delete/s3/:s3nameID',
+                        url: `/v1/api/aws/apigateway/${_?.s3?._apigatewaynameID}/delete/s3/${nameID}`
+                    };
                     return {
                         name: 'name',
                         nameID,
+                        apiendpoint,
                     };
                 },
 
                 // AWSDeleteLambda
                 lambda: (_, { nameID }, ctx) => {
+                    const apiendpoint = {
+                        method: 'POST',
+                        path: '/v1/api/aws/apigateway/:apigatewaynameID/delete/lambda/:lambdanameID',
+                        url: `/v1/api/aws/apigateway/${_?.lambda?._apigatewaynameID}/delete/lambda/${nameID}`
+                    };
                     return {
                         name: 'name',
                         nameID,
+                        apiendpoint,
                     };
                 },
             },
@@ -244,6 +349,11 @@ const resolvers = {
 
         // CreateMongoDB
         create: (_, { name }, ctx) => {
+            const apiendpoint = {
+                method: 'POST',
+                path: '/v1/api/mongodb/create/:mongodbnameID',
+                url: `/v1/api/mongodb/create/${name}`
+            };
             return {
                 name,
                 nameID: `${name}-id`
@@ -252,28 +362,40 @@ const resolvers = {
         
         // DeleteMongoDB
         delete: (_, { nameID }, ctx) => {
+            const apiendpoint = {
+                method: 'POST',
+                path: '/v1/api/mongodb/delete/:mongodbnameID',
+                url: `/v1/api/mongodb/delete/${nameID}`
+            };
             return {
                 name: 'name',
                 nameID,
+                apiendpoint,
             }
         },
 
         // MongoDBResourceManager
         db: (_, { nameID }, ctx) => {
+            const apiendpoint = {
+                method: 'POST',
+                path: '/v1/api/mongodb/:mongodbnameID',
+                url: `/v1/api/mongodb/${nameID}`
+            };
             return {
                 name: 'name',
                 nameID,
+                apiendpoint,
             }
         },
 
         // MongoDBResourceScript
         script: () => ({
             execute: {},
+            executegraphql: {},
         })
     },
 
         MongoDBResourceScript: {
-            // String
             execute: async (_, { mongodbscript }, ctx) => {
 
                 const apiendpoint = {
@@ -366,25 +488,43 @@ const resolvers = {
 
         // CreateNextJsResource
         create: (_, { name }, ctx) => {
+            const apiendpoint = {
+                method: 'POST',
+                path: '/v1/api/nextjs/create/:nextjsnameID',
+                url: `/v1/api/nextjs/create/${name}`
+            };
             return {
                 name,
-                nameID: `${name}-id`
+                nameID: `${name}-id`,
+                apiendpoint,
             };  
         },
         
         // DeleteNextJsResource
         delete: (_, { nameID }, ctx) => {
+            const apiendpoint = {
+                method: 'POST',
+                path: '/v1/api/nextjs/delete/:nextjsnameID',
+                url: `/v1/api/nextjs/delete/${nameID}`
+            };
             return {
                 name: 'name',
                 nameID,
+                apiendpoint,
             }
         },
 
         // NextJsResourceManager
         resource: (_, { nameID }, ctx) => {
+            const apiendpoint = {
+                method: 'POST',
+                path: '/v1/api/nextjs/:nextjsnameID',
+                url: `/v1/api/nextjs/${nameID}`
+            };
             return {
                 name: 'name',
                 nameID,
+                apiendpoint,
             }
         },
     },
@@ -403,12 +543,12 @@ const resolvers = {
 
         // AppSecretsLedger
         secrets: (_, { secretApiKey }, ctx) => ({
-            api: {},
-            ec2: {},
-            apigateway: {},
-            websocket: {},
-            mongodb: {},
-            nextjs: {},
+            api: { secretApiKey },
+            ec2: { secretApiKey },
+            apigateway: { secretApiKey },
+            websocket: { secretApiKey },
+            mongodb: { secretApiKey },
+            nextjs: { secretApiKey },
         }),
 
         // AppEventsLedger
@@ -438,61 +578,97 @@ const resolvers = {
 
             // APIEnvironmenVariablesLedger
             api: () => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/environmentvariables/api',
+                    url: `/v1/api/ledger/environmentvariables/api`
+                };
                 return {
-                    rid: 'api-rid'
+                    rid: 'api-rid',
+                    apiendpoint,
                 };
             },
 
             // [EC2EnvironmentVariablesLedger]
             ec2: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/environmentvariables/ec2/:ec2nameID',
+                    url: `/v1/api/ledger/environmentvariables/ec2/${nameID ? '/' + nameID : ''}`
+                };
                 return [
                     {
                         name: 'name',
                         nameID,
                         id: 'id',
+                        apiendpoint,
                     }
                 ];
             },
 
             // [ApiGatewayEnvironmentVariablesLedger]
             apigateway: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/environmentvariables/apigateway/:apigatewaynameID',
+                    url: `/v1/api/ledger/environmentvariables/apigateway/${nameID ? '/' + nameID : ''}`
+                };
                 return [
                     {
                         name: 'name',
                         nameID,
-                        dynamodb: {},
-                        s3: {},
-                        lambda: {},
+                        dynamodb: { _apigatewaynameID: nameID },
+                        s3: { _apigatewaynameID: nameID },
+                        lambda: { _apigatewaynameID: nameID },
+                        apiendpoint,
                     }
                 ];
             },
 
             // [WebsocketEnvironmentVariablesLedger]
             websocket: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/environmentvariables/websocket/:websocketnameID',
+                    url: `/v1/api/ledger/environmentvariables/websocket/${nameID ? '/' + nameID : ''}`
+                };
                 return [
                     {
                         name: 'name',
                         nameID,
+                        apiendpoint,
                     }
                 ];
             },
 
             // [MongoDBEnvironmentVariablesLedger]
             mongodb: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/environmentvariables/mongodb/:mongodbnameID',
+                    url: `/v1/api/ledger/environmentvariables/mongodb/${nameID ? '/' + nameID : ''}`
+                };
                 return [
                     {
                         name: 'name',
                         nameID,
+                        apiendpoint,
                     }
                 ];
             },
 
             // [NextJsEnvironmentVariablesLedger]
             nextjs: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/environmentvariables/nextjs/:nextjsnameID',
+                    url: `/v1/api/ledger/environmentvariables/nextjs/${nameID ? '/' + nameID : ''}`
+                };
                 return [
                     {
                         name: 'name',
                         nameID,
+                        apiendpoint,
                     }
                 ];
             },
@@ -502,30 +678,48 @@ const resolvers = {
 
                 // [DynamoEnvironmentVariablesLedger]
                 dynamodb: (_, { nameID }, ctx) => {
+                    const apiendpoint = {
+                        method: 'POST',
+                        path: '/v1/api/ledger/environmentvariables/apigateway/:apigatewaynameID/dynamodb/:dynamodbnameID',
+                        url: `/v1/api/ledger/environmentvariables/apigateway/${_?.dynamodb?._apigatewaynameID}/dynamodb/${nameID ? '/' + nameID : ''}`
+                    };
                     return [
                         {
                             name: 'name',
                             nameID,
+                            apiendpoint,
                         }
                     ];
                 },
 
                 // [S3SEnvironmentVariablesLedger]
                 s3: (_, { nameID }, ctx) => {
+                    const apiendpoint = {
+                        method: 'POST',
+                        path: '/v1/api/ledger/environmentvariables/apigateway/:apigatewaynameID/s3/:s3nameID',
+                        url: `/v1/api/ledger/environmentvariables/apigateway/${_?.s3?._apigatewaynameID}/s3/${nameID ? '/' + nameID : ''}`
+                    };
                     return [
                         {
                             name: 'name',
                             nameID,
+                            apiendpoint,
                         }
                     ];
                 },
                 
                 // [LambdaEnvironmentVariablesLedger]
                 lambda: (_, { nameID }, ctx) => {
+                    const apiendpoint = {
+                        method: 'POST',
+                        path: '/v1/api/ledger/environmentvariables/apigateway/:apigatewaynameID/lambda/:lambdanameID',
+                        url: `/v1/api/ledger/environmentvariables/apigateway/${_?.lambda?._apigatewaynameID}/lambda/${nameID ? '/' + nameID : ''}`
+                    };
                     return [
                         {
                             name: 'name',
                             nameID,
+                            apiendpoint,
                         }
                     ];
                 },
@@ -535,60 +729,96 @@ const resolvers = {
 
             // APISecretsLedger
             api: () => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/secrets/api',
+                    url: `/v1/api/ledger/secrets/api`
+                };
                 return {
-                    apiKey: 'api-key'
+                    apiKey: 'api-key',
+                    apiendpoint,
                 };
             },
 
             // [EC2SecretsLedger]
             ec2: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/secrets/ec2/:ec2nameID',
+                    url: `/v1/api/ledger/secrets/ec2/${nameID ? '/' + nameID : ''}`
+                };
                 return [
                     {
                         name: 'name',
                         nameID,
+                        apiendpoint,
                     }
                 ];
             },
 
             // [ApiGatewaySecretsLedger]
             apigateway: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/secrets/apigateway/:apigatewaynameID',
+                    url: `/v1/api/ledger/secrets/apigateway/${nameID ? '/' + nameID : ''}`
+                };
                 return [
                     {
                         name: 'name',
                         nameID,
-                        dynamodb: {},
-                        s3: {},
-                        lambda: {},
+                        dynamodb: { _apigatewaynameID: nameID },
+                        s3: { _apigatewaynameID: nameID },
+                        lambda: { _apigatewaynameID: nameID },
+                        apiendpoint,
                     }
                 ];
             },
 
             // [WebsocketSecretsLedger]
             websocket: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/secrets/websocket/:websocketnameID',
+                    url: `/v1/api/ledger/secrets/websocket/${nameID ? '/' + nameID : ''}`
+                };
                 return [
                     {
                         name: 'name',
                         nameID,
+                        apiendpoint,
                     }
                 ];
             },
 
             // [MongoDBSecretsLedger]
             mongodb: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/secrets/mongodb/:mongodbnameID',
+                    url: `/v1/api/ledger/secrets/mongodb/${nameID ? '/' + nameID : ''}`
+                };
                 return [
                     {
                         name: 'name',
                         nameID,
+                        apiendpoint,
                     }
                 ];
             },
 
             // [NextJsSecretsLedger]
             nextjs: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/secrets/nextjs/:nextjsnameID',
+                    url: `/v1/api/ledger/secrets/nextjs/${nameID ? '/' + nameID : ''}`
+                };
                 return [
                     {
                         name: 'name',
                         nameID,
+                        apiendpoint,
                     }
                 ];
             },
@@ -598,6 +828,11 @@ const resolvers = {
 
                 // [DynamoDBSecretsLedger]
                 dynamodb: (_, { nameID }, ctx) => {
+                    const apiendpoint = {
+                        method: 'POST',
+                        path: '/v1/api/ledger/secrets/apigateway/:apigatewaynameID/dynamodb/:dynamodbnameID',
+                        url: `/v1/api/ledger/secrets/apigateway/${_?.dynamodb?._apigatewaynameID}/dynamodb/${nameID ? '/' + nameID : ''}`
+                    };
                     return [
                         {
                             name: 'name',
@@ -608,20 +843,32 @@ const resolvers = {
 
                 // [S3SecretsLedger]
                 s3: (_, { nameID }, ctx) => {
+                    const apiendpoint = {
+                        method: 'POST',
+                        path: '/v1/api/ledger/secrets/apigateway/:apigatewaynameID/s3/:s3nameID',
+                        url: `/v1/api/ledger/secrets/apigateway/${_?.s3?._apigatewaynameID}/s3/${nameID ? '/' + nameID : ''}`
+                    };
                     return [
                         {
                             name: 'name',
                             nameID,
+                            apiendpoint,
                         }
                     ];
                 },
                 
                 // [LambdaSecretsLedger]
                 lambda: (_, { nameID }, ctx) => {
+                    const apiendpoint = {
+                        method: 'POST',
+                        path: '/v1/api/ledger/secrets/apigateway/:apigatewaynameID/lambda/:lambdanameID',
+                        url: `/v1/api/ledger/secrets/apigateway/${_?.lambda?._apigatewaynameID}/lambda/${nameID ? '/' + nameID : ''}`
+                    };
                     return [
                         {
                             name: 'name',
                             nameID,
+                            apiendpoint,
                         }
                     ];
                 },
@@ -631,70 +878,112 @@ const resolvers = {
 
             // APIEventsLedger
             api: () => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/events/api',
+                    url: `/v1/api/ledger/events/api`
+                };
                 return {
                     createdAt: 'date',
+                    apiendpoint,
                 };
             },
 
             // [GraphQLScriptsEventsLedger] 
             graphqlscripts: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/events/graphqlscripts/:graphqlscriptsnameID',
+                    url: `/v1/api/ledger/events/graphqlscripts/${nameID ? '/' + nameID : ''}`
+                };
                 return [
                     {
                         name: 'name',
                         nameID,
+                        apiendpoint,
                     }
                 ];
             },
 
             // [EC2EventsLedger]
             ec2: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/events/ec2/:ec2nameID',
+                    url: `/v1/api/ledger/events/ec2/${nameID ? '/' + nameID : ''}`
+                };
                 return [
                     {
                         name: 'name',
                         nameID,
+                        apiendpoint,
                     }
                 ];
             },
 
             // [ApiGatewayEventsLedger]
             apigateway: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/events/apigateway/:apigatewaynameID',
+                    url: `/v1/api/ledger/events/apigateway/${nameID ? '/' + nameID : ''}`
+                };
                 return [
                     {
                         name: 'name',
                         nameID,
-                        dynamodb: {},
-                        s3: {},
-                        lambda: {},
+                        dynamodb: { _apigatewaynameID: nameID },
+                        s3: { _apigatewaynameID: nameID },
+                        lambda: { _apigatewaynameID: nameID },
+                        apiendpoint,
                     }
                 ];
             },
 
             // [WebsocketEventsLedger]
             websocket: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/events/websocket/:websocketnameID',
+                    url: `/v1/api/ledger/events/websocket/${nameID ? '/' + nameID : ''}`
+                };
                 return [
                     {
                         name: 'name',
                         nameID,
+                        apiendpoint,
                     }
                 ];
             },
 
             // [MongoDBEventsLedger]
             mongodb: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/events/mongodb/:mongodbnameID',
+                    url: `/v1/api/ledger/events/mongodb/${nameID ? '/' + nameID : ''}`
+                };
                 return [
                     {
                         name: 'name',
                         nameID,
+                        apiendpoint,
                     }
                 ];
             },
 
             // [NextJsEventsLedger]
             nextjs: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/events/nextjs/:nextjsnameID',
+                    url: `/v1/api/ledger/events/nextjs/${nameID ? '/' + nameID : ''}`
+                };
                 return [
                     {
                         name: 'name',
                         nameID,
+                        apiendpoint,
                     }
                 ];
             },
@@ -704,30 +993,48 @@ const resolvers = {
 
                 // [DynamoDBEventsLedger]
                 dynamodb: (_, { nameID }, ctx) => {
+                    const apiendpoint = {
+                        method: 'POST',
+                        path: '/v1/api/ledger/events/apigateway/:apigatewaynameID/dynamodb/:dynamodbnameID',
+                        url: `/v1/api/ledger/events/apigateway/${_?.dynamodb?._apigatewaynameID}/dynamodb/${nameID ? '/' + nameID : ''}`
+                    };
                     return [
                         {
                             name: 'name',
                             nameID,
+                            apiendpoint,
                         }
                     ];
                 },
 
                 // [S3EventsLedger]
                 s3: (_, { nameID }, ctx) => {
+                    const apiendpoint = {
+                        method: 'POST',
+                        path: '/v1/api/ledger/events/apigateway/:apigatewaynameID/s3/:s3nameID',
+                        url: `/v1/api/ledger/events/apigateway/${_?.s3?._apigatewaynameID}/s3/${nameID ? '/' + nameID : ''}`
+                    };
                     return [
                         {
                             name: 'name',
                             nameID,
+                            apiendpoint,
                         }
                     ];
                 },
                 
                 // [LambdaEventsLedger]
                 lambda: (_, { nameID }, ctx) => {
+                    const apiendpoint = {
+                        method: 'POST',
+                        path: '/v1/api/ledger/events/apigateway/:apigatewaynameID/lambda/:lambdanameID',
+                        url: `/v1/api/ledger/events/apigateway/${_?.lambda?._apigatewaynameID}/lambda/${nameID ? '/' + nameID : ''}`
+                    };
                     return [
                         {
                             name: 'name',
                             nameID,
+                            apiendpoint,
                         }
                     ];
                 },
@@ -737,23 +1044,40 @@ const resolvers = {
 
             // APIArchitectureLedger
             api: () => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/architecture/api',
+                    url: `/v1/api/ledger/architecture/api`
+                };
                 return {
                     createdAt: 'date',
+                    apiendpoint,
                 };
             },
 
             // [EC2ArchitectureLedger]
             ec2: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/architecture/ec2/:ec2nameID',
+                    url: `/v1/api/ledger/architecture/ec2/${nameID ? '/' + nameID : ''}`
+                };
                 return [
                     {
                         name: 'name',
                         nameID,
+                        apiendpoint,
                     }
                 ];
             },
 
             // [ApiGatewayArchitectureLedger]
             apigateway: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/architecture/apigateway/:apigatewaynameID',
+                    url: `/v1/api/ledger/architecture/apigateway/:apigatewaynameID${nameID ? '/' + nameID : ''}`
+                };
                 return [
                     {
                         name: 'name',
@@ -764,30 +1088,48 @@ const resolvers = {
 
             // [WebsocketArchitectureLedger]
             websocket: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/architecture/websocket/:websocketnameID',
+                    url: `/v1/api/ledger/architecture/websocket/${nameID ? '/' + nameID : ''}`
+                };
                 return [
                     {
                         name: 'name',
                         nameID,
+                        apiendpoint,
                     }
                 ];
             },
 
             // [MongoDBArchitectureLedger]
             mongodb: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/architecture/mongodb/:mongodbnameID',
+                    url: `/v1/api/ledger/architecture/mongodb/${nameID ? '/' + nameID : ''}`
+                };
                 return [
                     {
                         name: 'name',
                         nameID,
+                        apiendpoint,
                     }
                 ];
             },
 
             // [NextJsArchitectureLedger]
             nextjs: (_, { nameID }, ctx) => {
+                const apiendpoint = {
+                    method: 'POST',
+                    path: '/v1/api/ledger/architecture/nextjs/:nextjsnameID',
+                    url: `/v1/api/ledger/architecture/nextjs${nameID ? '/' + nameID : ''}`
+                };
                 return [
                     {
                         name: 'name',
                         nameID,
+                        apiendpoint,
                     }
                 ];
             },

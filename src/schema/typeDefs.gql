@@ -3,9 +3,9 @@
     # /v1
 
     type ApiEndpoint {
-        method: String!
-        path: String!
-        url: String!
+        method: String
+        path: String
+        url: String
     }
 
     """
@@ -97,12 +97,14 @@
             type AWSCreateApiGateway {
                 name: String
                 nameID: String!
+                apiendpoint: ApiEndpoint
             }
 
             # /v1/api/aws/create/websocket/:websocketname
             type AWSCreateWebsocket {
                 name: String
                 nameID: String!
+                apiendpoint: ApiEndpoint
             }
 
         # /v1/api/aws/delete
@@ -115,7 +117,7 @@
             type AWSDeleteApiGateway {
                 name: String
                 nameID: String!
-
+                apiendpoint: ApiEndpoint
                 ### more
             }
 
@@ -123,7 +125,7 @@
             type AWSDeleteWebsocket {
                 name: String
                 nameID: String!
-
+                apiendpoint: ApiEndpoint
                 ### more
             }
 
@@ -148,18 +150,21 @@
                 type AWSCreateDynamoDB {
                     name: String
                     nameID: String!
+                    apiendpoint: ApiEndpoint
                 }
 
                 # /v1/api/aws/apigateway/:apigatewaynameID/create/s3/:s3name
                 type AWSCreateS3 {
                     name: String
                     nameID: String!
+                    apiendpoint: ApiEndpoint
                 }
 
                 # /v1/api/aws/apigateway/:apigatewaynameID/create/lambda/:lambdaname
                 type AWSCreateLambda {
                     name: String
                     nameID: String!
+                    apiendpoint: ApiEndpoint
                 }
 
             # /v1/api/aws/apigateway/:apigatewaynameID/delete
@@ -173,7 +178,7 @@
                 type AWSDeleteDynamoDB {
                     name: String
                     nameID: String!
-
+                    apiendpoint: ApiEndpoint
                     ### more
                 }
 
@@ -181,7 +186,7 @@
                 type AWSDeleteS3 {
                     name: String
                     nameID: String!
-
+                    apiendpoint: ApiEndpoint
                     ### more
                 }
 
@@ -189,7 +194,7 @@
                 type AWSDeleteLambda {
                     name: String
                     nameID: String!
-
+                    apiendpoint: ApiEndpoint
                     ### more
                 }
 
@@ -206,7 +211,7 @@
             type AWSS3ResourceManager {
                 name: String
                 nameID: String
-
+                apiendpoint: ApiEndpoint
                 ### more
             }
 
@@ -221,7 +226,7 @@
                 type AWSLambdaResourceRead {
                     name: String
                     nameID: String
-
+                    apiendpoint: ApiEndpoint
                     ### more
                 }
 
@@ -229,7 +234,7 @@
                 type AWSLambdaResourceUpdate {
                     name: String
                     nameID: String
-
+                    apiendpoint: ApiEndpoint
                     ### more
                 }
 
@@ -237,7 +242,7 @@
                 type AWSLambdaResourceExecute {
                     name: String
                     nameID: String
-
+                    apiendpoint: ApiEndpoint
                     ### more
                 }
 
@@ -246,7 +251,7 @@
         type AWSWebsocketResourceManager {
             name: String
             nameID: String
-
+            apiendpoint: ApiEndpoint
             ### more
         }
 
@@ -264,12 +269,14 @@
         type CreateMongoDB {
             name: String
             nameID: String!
+            apiendpoint: ApiEndpoint
         }
 
         # /v1/api/mongodb/delete/:mongodbnameID
         type DeleteMongoDB {
             name: String
             nameID: String!
+            apiendpoint: ApiEndpoint
 
             ### more
         }
@@ -278,6 +285,7 @@
         type MongoDBResourceManager {
             name: String
             nameID: String
+            apiendpoint: ApiEndpoint
         }
 
         # /v1/api/mongodb/script
@@ -330,18 +338,21 @@
         type CreateNextJsResource {
             name: String
             nameID: String!
+            apiendpoint: ApiEndpoint
         }
 
         # /v1/api/nextjs/delete/:nextjsnameID
         type DeleteNextJsResource {
             name: String
             nameID: String!
+            apiendpoint: ApiEndpoint
         }
 
         # /v1/api/nextjs/:nextjsnameID
         type NextJsResourceManager {
             name: String
             nameID: String!
+            apiendpoint: ApiEndpoint
 
             ### more
         }
@@ -369,7 +380,7 @@
             # /v1/api/ledger/environmentvariables/api
             type APIEnvironmenVariablesLedger {
                 rid: String
-
+                apiendpoint: ApiEndpoint
                 ### more
             }
 
@@ -379,7 +390,7 @@
                 name: String
                 nameID: String
                 id: String
-
+                apiendpoint: ApiEndpoint
                 ### more
             }
 
@@ -391,7 +402,7 @@
                 dynamodb(nameID: String): [DynamoEnvironmentVariablesLedger]
                 s3(nameID: String): [S3SEnvironmentVariablesLedger]
                 lambda(nameID: String): [LambdaEnvironmentVariablesLedger]
-
+                apiendpoint: ApiEndpoint
                 ### more
             }
 
@@ -400,7 +411,7 @@
                 type DynamoEnvironmentVariablesLedger {
                     name: String
                     nameID: String
-
+                    apiendpoint: ApiEndpoint
                     ### more
                 }
 
@@ -409,7 +420,7 @@
                 type S3SEnvironmentVariablesLedger {
                     name: String
                     nameID: String
-
+                    apiendpoint: ApiEndpoint
                     ### more
                 }
 
@@ -418,7 +429,7 @@
                 type LambdaEnvironmentVariablesLedger {
                     name: String
                     nameID: String
-
+                    apiendpoint: ApiEndpoint
                     ### more
                 }
 
@@ -427,7 +438,7 @@
             type WebsocketEnvironmentVariablesLedger {
                 name: String
                 nameID: String
-
+                apiendpoint: ApiEndpoint
                 ### more
             }
 
@@ -436,7 +447,7 @@
             type MongoDBEnvironmentVariablesLedger {
                 name: String
                 nameID: String
-
+                apiendpoint: ApiEndpoint
                 ### more
             }
 
@@ -445,7 +456,7 @@
             type NextJsEnvironmentVariablesLedger {
                 name: String
                 nameID: String
-
+                apiendpoint: ApiEndpoint
                 ### more
             }
 
@@ -462,7 +473,7 @@
             # /v1/api/ledger/secrets/api
             type APISecretsLedger {
                 apiKey: String
-
+                apiendpoint: ApiEndpoint
                 ### more
             }
 
@@ -471,7 +482,7 @@
             type EC2SecretsLedger {
                 name: String
                 nameID: String
-
+                apiendpoint: ApiEndpoint
                 ### more
             }
 
@@ -483,7 +494,7 @@
                 dynamodb(nameID: String): [DynamoDBSecretsLedger]
                 s3(nameID: String): [S3SecretsLedger]
                 lambda(nameID: String): [LambdaSecretsLedger]
-
+                apiendpoint: ApiEndpoint
                 ### more
             }
 
@@ -492,7 +503,7 @@
                 type DynamoDBSecretsLedger {
                     name: String
                     nameID: String
-
+                    apiendpoint: ApiEndpoint
                     ### more
                 }
 
@@ -501,7 +512,7 @@
                 type S3SecretsLedger {
                     name: String
                     nameID: String
-
+                    apiendpoint: ApiEndpoint
                     ### more
                 }
 
@@ -510,7 +521,7 @@
                 type LambdaSecretsLedger {
                     name: String
                     nameID: String
-
+                    apiendpoint: ApiEndpoint
                     ### more
                 }
 
@@ -519,7 +530,7 @@
             type WebsocketSecretsLedger {
                 name: String
                 nameID: String
-
+                apiendpoint: ApiEndpoint
                 ### more
             }
 
@@ -528,7 +539,7 @@
             type MongoDBSecretsLedger {
                 name: String
                 nameID: String
-
+                apiendpoint: ApiEndpoint
                 ### more
             }
 
@@ -537,7 +548,7 @@
             type NextJsSecretsLedger {
                 name: String
                 nameID: String
-
+                apiendpoint: ApiEndpoint
                 ### more
             }
 
@@ -555,7 +566,7 @@
             # /v1/api/ledger/events/api
             type APIEventsLedger {
                 createdAt: String
-
+                apiendpoint: ApiEndpoint
                 ### more
             }
 
@@ -564,7 +575,7 @@
             type GraphQLScriptsEventsLedger {
                 name: String
                 nameID: String
-
+                apiendpoint: ApiEndpoint
                 ### more
             }
 
@@ -573,7 +584,7 @@
             type EC2EventsLedger {
                 name: String
                 nameID: String
-
+                apiendpoint: ApiEndpoint
                 ### more
             }
 
@@ -585,24 +596,28 @@
                 dynamodb(nameID: String): [DynamoDBEventsLedger]
                 s3(nameID: String): [S3EventsLedger]
                 lambda(nameID: String): [LambdaEventsLedger]
+                apiendpoint: ApiEndpoint
             }
 
                 # /v1/api/ledger/events/apigateway/:apigatewaynameID/dynamodb
                 # /v1/api/ledger/events/apigateway/:apigatewaynameID/dynamodb/:dynamodbnameID
                 type DynamoDBEventsLedger {
                     name: String
+                    apiendpoint: ApiEndpoint
                 }
 
                 # /v1/api/ledger/events/apigateway/:apigatewaynameID/s3
                 # /v1/api/ledger/events/apigateway/:apigatewaynameID/s3/:s3nameID
                 type S3EventsLedger {
                     name: String
+                    apiendpoint: ApiEndpoint
                 }
 
                 # /v1/api/ledger/events/apigateway/:apigatewaynameID/lambda
                 # /v1/api/ledger/events/apigateway/:apigatewaynameID/lambda/:s3nameID
                 type LambdaEventsLedger {
                     name: String
+                    apiendpoint: ApiEndpoint
                 }
 
             # /v1/api/ledger/events/websocket
@@ -610,6 +625,7 @@
             type WebsocketEventsLedger {
                 name: String
                 nameID: String
+                apiendpoint: ApiEndpoint
             }
 
             # /v1/api/ledger/events/mongodb
@@ -617,6 +633,7 @@
             type MongoDBEventsLedger {
                 name: String
                 nameID: String
+                apiendpoint: ApiEndpoint
             }
 
             # /v1/api/ledger/events/nextjs
@@ -624,21 +641,23 @@
             type NextJsEventsLedger {
                 name: String
                 nameID: String
+                apiendpoint: ApiEndpoint
             }
 
         # /v1/api/ledger/architecture
         type AppArchitectureLedger {
             api: APIArchitectureLedger
-            ec2: [EC2ArchitectureLedger]
-            apigateway: [ApiGatewayArchitectureLedger]
-            websocket: [WebsocketArchitectureLedger]
-            mongodb: [MongoDBArchitectureLedger]
-            nextjs: [NextJsArchitectureLedger]
+            ec2(nameID: String): [EC2ArchitectureLedger]
+            apigateway(nameID: String): [ApiGatewayArchitectureLedger]
+            websocket(nameID: String): [WebsocketArchitectureLedger]
+            mongodb(nameID: String): [MongoDBArchitectureLedger]
+            nextjs(nameID: String): [NextJsArchitectureLedger]
         }
 
             # /v1/api/ledger/architecture/api
             type APIArchitectureLedger {
                 createdAt: String
+                apiendpoint: ApiEndpoint
             }
 
             # /v1/api/ledger/architecture/ec2
@@ -646,6 +665,7 @@
             type EC2ArchitectureLedger {
                 name: String
                 nameID: String
+                apiendpoint: ApiEndpoint
             }
 
             # /v1/api/ledger/architecture/apigateway
@@ -653,6 +673,7 @@
             type ApiGatewayArchitectureLedger {
                 name: String
                 nameID: String
+                apiendpoint: ApiEndpoint
             }
 
             # /v1/api/ledger/architecture/websocket
@@ -660,6 +681,7 @@
             type WebsocketArchitectureLedger {
                 name: String
                 nameID: String
+                apiendpoint: ApiEndpoint
             }
 
             # /v1/api/ledger/architecture/mongodb
@@ -667,6 +689,7 @@
             type MongoDBArchitectureLedger {
                 name: String
                 nameID: String
+                apiendpoint: ApiEndpoint
             }
 
             # /v1/api/ledger/architecture/nextjs
@@ -674,6 +697,7 @@
             type NextJsArchitectureLedger {
                 name: String
                 nameID: String
+                apiendpoint: ApiEndpoint
             }
 
 
